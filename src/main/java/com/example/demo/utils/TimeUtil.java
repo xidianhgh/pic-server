@@ -12,7 +12,7 @@ public class TimeUtil {
      * @return
      */
     public static String getCurrentTime() {
-        Date date = new Date();
+        Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat simpleDateFormat =
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return simpleDateFormat.format(date);
