@@ -7,10 +7,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,6 +55,7 @@ public class ReadExcelUtil {
         for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
             Row row = sheet.getRow(i);
             List<String> rowList = new ArrayList<>();
+            // 不可以 j<=row.getLastCellNum();
             for (int j = row.getFirstCellNum(); j < row.getLastCellNum(); j++) {
                 Cell cell = row.getCell(j);
                 rowList.add(cellStringValue(cell));
@@ -65,6 +63,30 @@ public class ReadExcelUtil {
             excel.add(rowList);
         }
         return excel;
+    }
+
+    public static void createExcel(String filepath, List<List<String>> content) throws Exception {
+        Workbook workbook = null;
+        if (filepath.endsWith(".xls")) {
+            workbook = new HSSFWorkbook();
+        } else if (filepath.endsWith(".xlsx")) {
+            workbook = new XSSFWorkbook();
+        } else {
+            throw new Exception("文件类型错误！");
+        }
+        // 创建第一个Sheet页
+        Sheet sheet = workbook.createSheet("第一个Sheet页");
+
+        for (int i = 0; i < content.size(); i++) {
+            Row row = sheet.createRow(i);
+            for (int j = 0; j < content.get(i).size(); j++) {
+                String value = content.get(i).get(j);
+                Cell cell = row.createCell(j);
+                cell.setCellValue(value);
+            }
+        }
+        FileOutputStream os = new FileOutputStream(filepath);
+        workbook.write(os);
     }
 
     public static String cellStringValue(Cell cell) {
@@ -109,10 +131,33 @@ public class ReadExcelUtil {
     }
 
 
-    public static void main(String[] args) {
-        String filepath = "C:\\Users\\MI\\Desktop\\f.xlsx";
-        String value = getValue(filepath, 0, 2, 0);
+    public static void main(String[] args) throws Exception {
+        createExcel();
+        readExcelTest();
+    }
+
+    ////以下为测试方法
+    public static void readExcelTest() {
+        String filepath = "C:\\Users\\MI\\Desktop\\测试poi.xlsx";
+        String value = getValue(filepath, 0, 1, 7);
         System.out.println(value);
+    }
+
+    public static void createExcel() throws Exception {
+
+        int num = 0;
+        List<List<String>> content = new ArrayList<>();
+        // i为行，j为列
+        for (int i = 0; i < 2; i++) {
+            List<String> row = new ArrayList<>();
+            for (int j = 0; j < 9; j++) {
+                row.add(String.valueOf(++num));
+            }
+            content.add(row);
+        }
+
+        String filepath = "C:\\Users\\MI\\Desktop\\测试poi.xlsx";
+        createExcel(filepath, content);
     }
 
 
