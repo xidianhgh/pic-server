@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,12 +8,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Lazy
-@Scope("prototype")
+//@Scope("prototype")
 public class StudyService {
+    private int n=0;
 
     public String test(){
         String result="I am "+this.getClass().getName();
         System.out.println(result);
-        return result;
+        return String.valueOf(++n);
+
     }
 }

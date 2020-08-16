@@ -41,7 +41,10 @@ public class AopAspect {
 
         System.out.println("------advice------");
 
-        if((int)(Math.random()*100)%2==0){
+//        if((int)(Math.random()*100)%2==0){
+//            return joinPoint.proceed();
+//        }
+        if(true){
             return joinPoint.proceed();
         }
 
