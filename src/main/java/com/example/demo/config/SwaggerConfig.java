@@ -42,9 +42,9 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("测试项目")
                 .version("1.0.0")
-                .description("这是项目描述").build();
+                .description("图片服务器").build();
     }
 
-
+//swagger地址：http://localhost:8089/swagger-ui.html
 
 }

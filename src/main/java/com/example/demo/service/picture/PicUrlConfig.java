@@ -3,11 +3,15 @@ package com.example.demo.service.picture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.List;
 
 
 @Configuration
@@ -19,6 +23,20 @@ class PicUrlConfig implements WebMvcConfigurer {
     PicUploadProperties picUploadProperties;
 
 //    @Override
+//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        //配置UTF-8编码
+//        StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+//        stringHttpMessageConverter.setWriteAcceptCharset(false);
+//        converters.add(stringHttpMessageConverter);
+//    }
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        stringHttpMessageConverter.setWriteAcceptCharset(true);
+        converters.add(stringHttpMessageConverter);
+    }
+
+    //    @Override
 //    public void addResourceHandlers(ResourceHandlerRegistry registry) {
 ////        String urlPrefixStr = "http://localhost:8089/pic/";
 //        String urlPrefixStr = "http://localhost:"+port+"/pic/";

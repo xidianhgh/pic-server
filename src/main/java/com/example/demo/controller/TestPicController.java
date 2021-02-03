@@ -1,21 +1,16 @@
 package com.example.demo.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.example.demo.controller.dto.Response;
-import com.example.demo.entity.Person;
-import com.example.demo.service.APIService;
 import com.example.demo.utils.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,48 +20,6 @@ import java.util.Map;
 @RequestMapping(value = "/test")
 @Slf4j
 public class TestPicController {
-    @Resource
-    private RestTemplate restTemplate;
-    @Resource
-    private APIService apiService;
-
-    @GetMapping("")
-    public Map<String,Object> testHttpClient() throws Exception {
-
-//        Map<String,Object> map=restTemplate.getForObject("http://localhost:8089/hello",Map.class);
-
-        String url="http://192.168.199.111:8089/test/generic";
-        Person req=new Person();
-        req.setAge(124);
-        JSONObject response=restTemplate.postForObject(url,req,JSONObject.class);
-
-        Response resp=restTemplate.postForObject(url,req,Response.class);
-
-        Map<String,Object> reqMap=new HashMap<>();
-        reqMap.put("age",90);
-//        HttpResult resp=apiService.doPost(url,reqMap);
-
-        String respString=apiService.sendHttpPost(url,JSONObject.toJSONString(reqMap));
-
-        JSONObject respJson=JSONObject.parseObject(respString);
-        Map<String,Object> map=new HashMap<>();
-//        HttpClient httpClient=new HttpClient();
-        return map;
-
-    }
-
-    @PostMapping("/generic")
-    public Response test(@RequestBody Person req){
-
-        List<Person> list=new ArrayList<>();
-        for(int i=0;i<3;i++){
-            Person person=new Person();
-            person.setName(String.valueOf(i)+"messi");
-            person.setAge(req.getAge());
-            list.add(person);
-        }
-        return Response.ok(list);
-    }
 
     @Value("${fileupload.pic.urlPrefix}")
     private String picUrlPrefix;
